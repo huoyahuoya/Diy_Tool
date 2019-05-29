@@ -28,6 +28,8 @@ function islocked() {
   islock=${ARRAY[1]#*=}
 }
 
+adb logcat -b all -c
+
 while true
 do
   islocked
@@ -39,14 +41,15 @@ do
   fi
   unlock
 done
+
 mCurrentFocus
 echo $PACKAGES
 adb shell pm path $PACKAGES
 adb shell ps | grep $PACKAGES | tee d.txt
-PID_ID=`awk  '{print $2}' ./d.txt`
+PID_ID=($(awk  '{print $2}' ./d.txt))
 rm a.txt b.txt c.txt d.txt
-echo "回车查看log"
-read ENTER
-echo "log如下:"
-adb logcat -c
-adb logcat --pid=$PID_ID
+echo "选择进程，查看log"
+read num
+num=$[${num}-1]
+echo adb logcat --pid=${PID_ID[$num]}
+adb logcat --pid=${PID_ID[$num]}
