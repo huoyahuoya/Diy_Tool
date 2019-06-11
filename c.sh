@@ -4,7 +4,7 @@ islock=true
 flag=1
 
 function mCurrentFocus() {
-  adb shell dumpsys window | grep mCurrentFocus > a.txt
+  adb shell dumpsys window | grep mCurrentFocus | tee a.txt
   awk  '{print $3}' ./a.txt > b.txt
   awk -F '[}]' '{print $1}' ./b.txt > c.txt
   PACKAGES=`awk -F '[/]' '{print $1}' ./c.txt`
